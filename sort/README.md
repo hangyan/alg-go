@@ -2,5 +2,5 @@
 
 ## 堆排序
 
-- [Golang : Heap sort example](https://socketloop.com/tutorials/golang-heap-sort-example)
+- [Stackoverflow: go heapsort](https://stackoverflow.com/questions/30384899/golang-heap-and-heapsort)
 - [Wiki: Heapsort](https://en.wikipedia.org/wiki/Heapsort)

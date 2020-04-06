@@ -1,40 +1,54 @@
 package sort
 
-// from http://en.wikipedia.org/wiki/Heapsort
-// iParent = floor((i-1) / 2)
-func buildMaxHeap(input []int) {
-	for i := (len(input) - 1) / 2; i >= 0; i-- {
-		maxHeapify(input, i)
-	}
+import (
+	"fmt"
+)
+
+type MaxHeap struct {
+	slice    []int
+	heapSize int
 }
 
-func maxHeapify(input []int, position int) {
-	size := len(input)
-	maximum := position
-
-	leftChild := 2*position + 1
-	rightChild := 2*position + 1
-
-	if leftChild < size && input[leftChild] > input[position] {
-		maximum = leftChild
+func BuildMaxHeap(slice []int) MaxHeap {
+	h := MaxHeap{slice: slice, heapSize: len(slice)}
+	for i := len(slice)/2 - 1; i >= 0; i-- {
+		h.MaxHeapify(i)
 	}
-
-	if rightChild < size && input[rightChild] > input[position] {
-		maximum = rightChild
-	}
-
-	if position != maximum {
-		input[position], input[maximum] = input[maximum], input[position]
-		// TODO: ?
-		maxHeapify(input, maximum)
-	}
+	return h
 }
 
-func HeapSort(input []int) {
-	buildMaxHeap(input)
+func (h MaxHeap) MaxHeapify(i int) {
+	l, r := 2*i+1, 2*i+2
+	max := i
 
-	for i := len(input) - 1; i >= 1; i-- {
-		input[i], input[0] = input[0], input[i]
-		maxHeapify(input[:i-1], 0)
+	if l < h.size() && h.slice[l] > h.slice[max] {
+		max = l
 	}
+
+	if r < h.size() && h.slice[r] > h.slice[max] {
+		max = r
+	}
+
+	if max != i {
+		h.slice[i], h.slice[max] = h.slice[max], h.slice[i]
+		fmt.Printf("For index %d, max is: %d, array is: %+v\n", i, max, h.slice)
+
+		h.MaxHeapify(max)
+	}
+
+}
+
+func (h MaxHeap) size() int {
+	return h.heapSize
+}
+
+func HeapSort(slice []int) []int {
+	h := BuildMaxHeap(slice)
+	fmt.Println("After build:", slice)
+	for i := len(h.slice) - 1; i >= 1; i-- {
+		h.slice[0], h.slice[i] = h.slice[i], h.slice[0]
+		h.heapSize--
+		h.MaxHeapify(0)
+	}
+	return h.slice
 }
